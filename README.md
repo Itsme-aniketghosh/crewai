@@ -4,13 +4,6 @@
   <strong>A comprehensive showcase of AI agents collaborating to solve complex real-world problems</strong>
 </p>
 
-<p align="center">
-  <a href="#-projects">Projects</a> •
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-architecture">Architecture</a> •
-  <a href="#-installation">Installation</a> •
-  <a href="#-contributing">Contributing</a>
-</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
