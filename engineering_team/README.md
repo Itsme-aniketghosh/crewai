@@ -1,54 +1,143 @@
-# EngineeringTeam Crew
+# 🔧 Engineering Team
 
-Welcome to the EngineeringTeam Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+> Full Software Development Team Simulation
 
-## Installation
+A complete engineering team that takes requirements and delivers working code with tests and a UI. Simulates the collaboration between lead, backend, frontend, and QA engineers.
 
-Ensure you have Python >=3.10 <3.13 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+## 🎯 Overview
 
-First, if you haven't already, install uv:
+This crew simulates a full software development workflow:
+1. **Engineering Lead** creates detailed design from requirements
+2. **Backend Engineer** implements the Python module
+3. **Frontend Engineer** builds a Gradio UI
+4. **Test Engineer** writes comprehensive unit tests
 
-```bash
-pip install uv
+## 🤖 Agents
+
+| Agent | Role | LLM | Code Execution |
+|-------|------|-----|----------------|
+| 🏗️ **Engineering Lead** | Creates detailed designs | `gpt-4o` | ❌ |
+| ⚙️ **Backend Engineer** | Implements Python code | `claude-3-7-sonnet` | ✅ |
+| 🎨 **Frontend Engineer** | Builds Gradio UI | `claude-3-7-sonnet` | ❌ |
+| 🧪 **Test Engineer** | Writes unit tests | `claude-3-7-sonnet` | ✅ |
+
+## 📋 Tasks
+
+| Task | Description | Agent | Output |
+|------|-------------|-------|--------|
+| **design_task** | Create detailed module design | Engineering Lead | `output/{module_name}_design.md` |
+| **code_task** | Implement the Python module | Backend Engineer | `output/{module_name}` |
+| **frontend_task** | Build Gradio demo UI | Frontend Engineer | `output/app.py` |
+| **test_task** | Write unit tests | Test Engineer | `output/test_{module_name}` |
+
+## 🔄 Workflow
+
+```
+┌──────────────────┐
+│  ENGINEERING     │
+│     LEAD         │
+│    (GPT-4o)      │
+│  Creates Design  │
+└────────┬─────────┘
+         │ design
+         ▼
+┌──────────────────┐
+│    BACKEND       │
+│   ENGINEER       │
+│ (Claude Sonnet)  │
+│ Writes Code      │
+└────────┬─────────┘
+         │ code
+    ┌────┴────┐
+    ▼         ▼
+┌────────┐ ┌────────┐
+│FRONTEND│ │  TEST  │
+│  ENG   │ │  ENG   │
+│Gradio  │ │ Tests  │
+└────────┘ └────────┘
 ```
 
-Next, navigate to your project directory and install the dependencies:
+## 🚀 Quick Start
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
-```
-### Customizing
+### Prerequisites
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+- Python 3.10+
+- Docker Desktop (for code execution)
+- OpenAI API key
+- Anthropic API key
 
-- Modify `src/engineering_team/config/agents.yaml` to define your agents
-- Modify `src/engineering_team/config/tasks.yaml` to define your tasks
-- Modify `src/engineering_team/crew.py` to add your own logic, tools and specific args
-- Modify `src/engineering_team/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+### Installation
 
 ```bash
-$ crewai run
+cd engineering_team
+pip install crewai crewai-tools gradio
 ```
 
-This command initializes the engineering_team Crew, assembling the agents and assigning them tasks as defined in your configuration.
+### Configuration
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+Create a `.env` file:
+```env
+OPENAI_API_KEY=your-openai-key
+ANTHROPIC_API_KEY=your-anthropic-key
+```
 
-## Understanding Your Crew
+### Run
 
-The engineering_team Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+```bash
+crewai run
+```
 
-## Support
+Or modify the requirements in `main.py`:
+```python
+requirements = """
+A simple account management system for a trading simulation platform.
+- Create accounts, deposit/withdraw funds
+- Buy/sell shares with quantity tracking
+- Calculate portfolio value and profit/loss
+- Prevent invalid transactions
+"""
+module_name = "accounts.py"
+class_name = "Account"
+```
 
-For support, questions, or feedback regarding the EngineeringTeam Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+## 📁 Output
 
-Let's create wonders together with the power and simplicity of crewAI.
+Four files are generated:
+- `output/{module_name}_design.md` - Detailed design document
+- `output/{module_name}` - The Python module
+- `output/app.py` - Gradio UI for the module
+- `output/test_{module_name}` - Unit tests
+
+## 📂 Project Structure
+
+```
+engineering_team/
+├── output/
+├── example_output_4o/       # Sample output using GPT-4o
+├── example_output_mini/     # Sample output using GPT-4o-mini
+├── example_output_new/      # Latest sample output
+├── knowledge/
+└── src/engineering_team/
+    ├── config/
+    │   ├── agents.yaml
+    │   └── tasks.yaml
+    ├── tools/
+    │   └── custom_tool.py
+    ├── crew.py
+    └── main.py
+```
+
+## 💡 Example Use Cases
+
+- Rapid prototyping of Python applications
+- Auto-generating trading/finance modules
+- Creating CRUD applications with UI
+- Building testable Python packages
+
+## 🎨 Key Features
+
+- **Multi-LLM Collaboration**: GPT-4o for design, Claude for implementation
+- **Complete Deliverables**: Design, code, UI, and tests
+- **Safe Code Execution**: Docker-containerized execution
+- **Task Dependencies**: Each task builds on the previous
+- **Production-Ready Output**: Clean, executable Python code

@@ -1,54 +1,114 @@
-# Debate Crew
+# ⚔️ Debate
 
-Welcome to the Debate Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+> AI Agents Engaging in Structured Debates
 
-## Installation
+A debate simulation where one agent argues both sides of a motion, and a separate judge agent decides the winner based purely on argument merit.
 
-Ensure you have Python >=3.10 < 3.13 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+## 🎯 Overview
 
-First, if you haven't already, install uv:
+This crew simulates a formal debate:
+1. **Proposer** presents arguments FOR the motion
+2. **Opposer** presents arguments AGAINST the motion
+3. **Judge** evaluates and decides the winner
 
-```bash
-pip install uv
+The same debater agent argues both sides, while an impartial judge (using a different LLM) makes the final decision.
+
+## 🤖 Agents
+
+| Agent | Role | LLM |
+|-------|------|-----|
+| **Debater** | Argues both FOR and AGAINST | `gpt-4o-mini` |
+| **Judge** | Decides the winner | `claude-3-7-sonnet-latest` |
+
+## 📋 Tasks
+
+| Task | Description | Agent | Output |
+|------|-------------|-------|--------|
+| **propose** | Argue in favor of the motion | Debater | `output/propose.md` |
+| **oppose** | Argue against the motion | Debater | `output/oppose.md` |
+| **decide** | Review arguments and decide winner | Judge | `output/decide.md` |
+
+## 🔄 Workflow
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   PROPOSE   │ ──▶ │   OPPOSE    │ ──▶ │   DECIDE    │
+│  (Debater)  │     │  (Debater)  │     │   (Judge)   │
+│ GPT-4o-mini │     │ GPT-4o-mini │     │Claude Sonnet│
+└─────────────┘     └─────────────┘     └─────────────┘
 ```
 
-Next, navigate to your project directory and install the dependencies:
+## 🚀 Quick Start
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
-```
-### Customizing
+### Prerequisites
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+- Python 3.10+
+- OpenAI API key
+- Anthropic API key
 
-- Modify `src/debate/config/agents.yaml` to define your agents
-- Modify `src/debate/config/tasks.yaml` to define your tasks
-- Modify `src/debate/crew.py` to add your own logic, tools and specific args
-- Modify `src/debate/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+### Installation
 
 ```bash
-$ crewai run
+cd debate
+pip install crewai crewai-tools
 ```
 
-This command initializes the debate Crew, assembling the agents and assigning them tasks as defined in your configuration.
+### Configuration
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+Create a `.env` file:
+```env
+OPENAI_API_KEY=your-openai-key
+ANTHROPIC_API_KEY=your-anthropic-key
+```
 
-## Understanding Your Crew
+### Run
 
-The debate Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+```bash
+crewai run
+```
 
-## Support
+Or modify the motion in `main.py`:
+```python
+inputs = {
+    'motion': 'There needs to be strict laws to regulate LLMs',
+}
+```
 
-For support, questions, or feedback regarding the Debate Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+## 📁 Output
 
-Let's create wonders together with the power and simplicity of crewAI.
+Three markdown files are generated:
+- `output/propose.md` - Arguments FOR the motion
+- `output/oppose.md` - Arguments AGAINST the motion
+- `output/decide.md` - Judge's decision and reasoning
+
+## 📂 Project Structure
+
+```
+debate/
+├── output/
+│   ├── propose.md
+│   ├── oppose.md
+│   └── decide.md
+├── knowledge/
+└── src/debate/
+    ├── config/
+    │   ├── agents.yaml
+    │   └── tasks.yaml
+    ├── tools/
+    │   └── custom_tool.py
+    ├── crew.py
+    └── main.py
+```
+
+## 💡 Example Motions
+
+- "There needs to be strict laws to regulate LLMs"
+- "Remote work is more productive than office work"
+- "AI will create more jobs than it destroys"
+- "Social media does more harm than good"
+
+## 🎨 Key Features
+
+- **Multi-LLM Setup**: Uses GPT-4o-mini for debating and Claude for judging
+- **Impartial Judgment**: Judge decides purely on argument merit
+- **Structured Output**: Clean markdown files for each debate stage

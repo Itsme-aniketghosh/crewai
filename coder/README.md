@@ -1,54 +1,101 @@
-# Coder Crew
+# 💻 Coder
 
-Welcome to the Coder Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+> AI-Powered Python Developer with Safe Code Execution
 
-## Installation
+A single-agent CrewAI project that writes, executes, and validates Python code in a secure Docker environment.
 
-Ensure you have Python >=3.10 <3.13 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+## 🎯 Overview
 
-First, if you haven't already, install uv:
+This crew features a Python Developer agent that:
+1. Plans how the code will work
+2. Writes clean, efficient Python code
+3. Executes it safely in Docker
+4. Returns both the code and its output
+
+## 🤖 Agent
+
+| Agent | Role | LLM |
+|-------|------|-----|
+| **Coder** | Python Developer | `gpt-4o-mini` |
+
+**Capabilities:**
+- ✅ Code execution enabled
+- ✅ Safe mode (Docker containerized)
+- ✅ 30-second execution timeout
+- ✅ 3 retry attempts on failure
+
+## 📋 Task
+
+| Task | Description | Output |
+|------|-------------|--------|
+| **coding_task** | Write Python code to achieve the assignment | `output/code_and_output.txt` |
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.10+
+- Docker Desktop ([Install here](https://docs.docker.com/desktop/))
+- OpenAI API key
+
+### Installation
 
 ```bash
-pip install uv
+cd coder
+pip install crewai crewai-tools
 ```
 
-Next, navigate to your project directory and install the dependencies:
+### Configuration
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
+Create a `.env` file:
+```env
+OPENAI_API_KEY=your-openai-key
 ```
-### Customizing
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/coder/config/agents.yaml` to define your agents
-- Modify `src/coder/config/tasks.yaml` to define your tasks
-- Modify `src/coder/crew.py` to add your own logic, tools and specific args
-- Modify `src/coder/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+### Run
 
 ```bash
-$ crewai run
+crewai run
 ```
 
-This command initializes the coder Crew, assembling the agents and assigning them tasks as defined in your configuration.
+Or modify the assignment in `main.py`:
+```python
+assignment = 'Write a python program to calculate the first 10,000 terms \
+    of this series, multiplying the total by 4: 1 - 1/3 + 1/5 - 1/7 + ...'
+```
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+## 📁 Output
 
-## Understanding Your Crew
+Results are saved to `output/code_and_output.txt` containing:
+- The generated Python code
+- The execution output/results
 
-The coder Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+## 📂 Project Structure
 
-## Support
+```
+coder/
+├── output/
+│   └── code_and_output.txt
+├── knowledge/
+└── src/coder/
+    ├── config/
+    │   ├── agents.yaml
+    │   └── tasks.yaml
+    ├── tools/
+    │   └── custom_tool.py
+    ├── crew.py
+    └── main.py
+```
 
-For support, questions, or feedback regarding the Coder Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+## 💡 Example Use Cases
 
-Let's create wonders together with the power and simplicity of crewAI.
+- Mathematical computations and series calculations
+- Data processing scripts
+- Algorithm implementations
+- Code generation from natural language descriptions
+
+## ⚠️ Notes
+
+- Requires Docker Desktop for safe code execution
+- Execution timeout is set to 30 seconds
+- The agent will retry up to 3 times on failure

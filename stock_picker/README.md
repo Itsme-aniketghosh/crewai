@@ -1,54 +1,170 @@
-# StockPicker Crew
+# 📈 Stock Picker
 
-Welcome to the StockPicker Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+> Intelligent Stock Selection with Memory & Push Notifications
 
-## Installation
+The most advanced crew in the collection — uses hierarchical management, persistent memory, and push notifications to find and recommend trending stocks.
 
-Ensure you have Python >=3.10 <3.13 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+## 🎯 Overview
 
-First, if you haven't already, install uv:
+This crew uses a sophisticated multi-agent hierarchy:
+1. **Manager** orchestrates the entire workflow
+2. **Trending Company Finder** discovers hot stocks in the news
+3. **Financial Researcher** conducts deep analysis
+4. **Stock Picker** makes final recommendations with push notifications
 
-```bash
-pip install uv
+## 🤖 Agents
+
+| Agent | Role | LLM | Tools | Memory |
+|-------|------|-----|-------|--------|
+| 👔 **Manager** | Orchestrates workflow | `gpt-4o` | — | — |
+| 🔍 **Trending Company Finder** | Finds trending stocks | `gpt-4o-mini` | `SerperDevTool` | ✅ |
+| 🔬 **Financial Researcher** | Deep company analysis | `gpt-4o-mini` | `SerperDevTool` | — |
+| 📊 **Stock Picker** | Final recommendation | `gpt-4o-mini` | `PushNotificationTool` | ✅ |
+
+## 📋 Tasks
+
+| Task | Description | Agent | Output |
+|------|-------------|-------|--------|
+| **find_trending_companies** | Find 2-3 trending companies | Finder | `output/trending_companies.json` |
+| **research_trending_companies** | Detailed analysis of each | Researcher | `output/research_report.json` |
+| **pick_best_company** | Select best investment | Stock Picker | `output/decision.md` |
+
+## 🏗️ Architecture
+
+```
+                    ┌─────────────────┐
+                    │     MANAGER     │
+                    │     (GPT-4o)    │
+                    │  Orchestrates   │
+                    └────────┬────────┘
+                             │ delegates
+        ┌────────────────────┼────────────────────┐
+        ▼                    ▼                    ▼
+┌───────────────┐   ┌───────────────┐   ┌───────────────┐
+│    FINDER     │   │  RESEARCHER   │   │ STOCK PICKER  │
+│Find trending  │──▶│Deep analysis  │──▶│ Final pick    │
+│SerperDevTool  │   │SerperDevTool  │   │ PushNotify    │
+│  GPT-4o-mini  │   │  GPT-4o-mini  │   │  GPT-4o-mini  │
+└───────────────┘   └───────────────┘   └───────────────┘
 ```
 
-Next, navigate to your project directory and install the dependencies:
+## 🧠 Memory System
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
+This project features a comprehensive memory system:
+
+| Memory Type | Storage | Purpose |
+|-------------|---------|---------|
+| **Long-Term** | SQLite | Persistent storage across sessions |
+| **Short-Term** | RAG (OpenAI embeddings) | Current context awareness |
+| **Entity** | RAG (OpenAI embeddings) | Track key company information |
+
+Memory is stored in the `memory/` folder and persists between runs.
+
+## 📱 Custom Push Notification Tool
+
+The `PushNotificationTool` sends real-time alerts via [Pushover](https://pushover.net/):
+
+```python
+class PushNotificationTool(BaseTool):
+    name: str = "Send a Push Notification"
+    # Sends instant alerts to your phone/device
 ```
-### Customizing
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+## 📊 Structured Output
 
-- Modify `src/stock_picker/config/agents.yaml` to define your agents
-- Modify `src/stock_picker/config/tasks.yaml` to define your tasks
-- Modify `src/stock_picker/crew.py` to add your own logic, tools and specific args
-- Modify `src/stock_picker/main.py` to add custom inputs for your agents and tasks
+Uses Pydantic models for type-safe structured data:
 
-## Running the Project
+- `TrendingCompany` - Company name, ticker, trending reason
+- `TrendingCompanyList` - List of trending companies
+- `TrendingCompanyResearch` - Detailed research on each company
+- `TrendingCompanyResearchList` - All research compiled
 
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.10+
+- OpenAI API key
+- Serper API key
+- Pushover account (for notifications)
+
+### Installation
 
 ```bash
-$ crewai run
+cd stock_picker
+pip install crewai crewai-tools requests
 ```
 
-This command initializes the stock_picker Crew, assembling the agents and assigning them tasks as defined in your configuration.
+### Configuration
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+Create a `.env` file:
+```env
+OPENAI_API_KEY=your-openai-key
+SERPER_API_KEY=your-serper-key
+PUSHOVER_USER=your-pushover-user
+PUSHOVER_TOKEN=your-pushover-token
+```
 
-## Understanding Your Crew
+### Run
 
-The stock_picker Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+```bash
+crewai run
+```
 
-## Support
+Or modify the sector in `main.py`:
+```python
+inputs = {
+    'sector': 'Technology',
+    'current_date': str(datetime.now())
+}
+```
 
-For support, questions, or feedback regarding the StockPicker Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+## 📁 Output
 
-Let's create wonders together with the power and simplicity of crewAI.
+Three files are generated:
+- `output/trending_companies.json` - Discovered trending stocks
+- `output/research_report.json` - Detailed analysis
+- `output/decision.md` - Final recommendation with rationale
+- **+ Push notification to your device!**
+
+## 📂 Project Structure
+
+```
+stock_picker/
+├── output/
+│   ├── trending_companies.json
+│   ├── research_report.json
+│   └── decision.md
+├── memory/                          # Persistent memory storage
+│   └── long_term_memory_storage.db
+├── knowledge/
+└── src/stock_picker/
+    ├── config/
+    │   ├── agents.yaml
+    │   └── tasks.yaml
+    ├── tools/
+    │   ├── __init__.py
+    │   └── push_tool.py            # Custom Pushover integration
+    ├── crew.py
+    └── main.py
+```
+
+## 💡 Example Sectors
+
+- Technology
+- Healthcare
+- Finance
+- Energy
+- Consumer Goods
+
+## 🎨 Key Features
+
+- **Hierarchical Process**: Manager agent delegates and coordinates
+- **Memory Persistence**: Learns from past runs (won't pick same company twice)
+- **Real-time Alerts**: Push notifications for instant updates
+- **Structured Data**: Type-safe Pydantic models
+- **Web Search**: Real-time market data via Serper
+
+## ⚠️ Disclaimer
+
+Stock recommendations are for educational purposes only. This is not financial advice. Always do your own research and consult with a qualified financial advisor before making investment decisions.

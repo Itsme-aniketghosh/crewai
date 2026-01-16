@@ -1,54 +1,119 @@
-# FinancialResearcher Crew
+# 📊 Financial Researcher
 
-Welcome to the FinancialResearcher Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+> AI-Powered Company Analysis and Reporting
 
-## Installation
+A research crew that investigates companies and produces comprehensive financial reports with market analysis.
 
-Ensure you have Python >=3.10 <3.13 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+## 🎯 Overview
 
-First, if you haven't already, install uv:
+This crew performs thorough company research:
+1. **Researcher** gathers data from the web using search tools
+2. **Analyst** synthesizes findings into a polished report
 
-```bash
-pip install uv
+## 🤖 Agents
+
+| Agent | Role | LLM | Tools |
+|-------|------|-----|-------|
+| 🔬 **Researcher** | Gathers financial data | `gpt-4o-mini` | `SerperDevTool` |
+| 📝 **Analyst** | Writes comprehensive reports | `gpt-4o-mini` | — |
+
+## 📋 Tasks
+
+| Task | Description | Agent | Output |
+|------|-------------|-------|--------|
+| **research_task** | Conduct thorough company research | Researcher | (passed to analyst) |
+| **analysis_task** | Create comprehensive report | Analyst | `output/report.md` |
+
+## 🔄 Workflow
+
+```
+┌──────────────────┐         ┌──────────────────┐
+│    RESEARCHER    │  ────▶  │     ANALYST      │
+│  Gathers data    │ context │  Writes report   │
+│  SerperDevTool   │         │                  │
+│   GPT-4o-mini    │         │   GPT-4o-mini    │
+└──────────────────┘         └──────────────────┘
 ```
 
-Next, navigate to your project directory and install the dependencies:
+## 🚀 Quick Start
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
-```
-### Customizing
+### Prerequisites
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+- Python 3.10+
+- OpenAI API key
+- Serper API key ([Get one here](https://serper.dev/))
 
-- Modify `src/financial_researcher/config/agents.yaml` to define your agents
-- Modify `src/financial_researcher/config/tasks.yaml` to define your tasks
-- Modify `src/financial_researcher/crew.py` to add your own logic, tools and specific args
-- Modify `src/financial_researcher/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
+### Installation
 
 ```bash
-$ crewai run
+cd financial_researcher
+pip install crewai crewai-tools
 ```
 
-This command initializes the financial_researcher Crew, assembling the agents and assigning them tasks as defined in your configuration.
+### Configuration
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+Create a `.env` file:
+```env
+OPENAI_API_KEY=your-openai-key
+SERPER_API_KEY=your-serper-key
+```
 
-## Understanding Your Crew
+### Run
 
-The financial_researcher Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+```bash
+crewai run
+```
 
-## Support
+Or modify the company in `main.py`:
+```python
+inputs = {
+    'company': 'Apple'
+}
+```
 
-For support, questions, or feedback regarding the FinancialResearcher Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+## 📁 Output
 
-Let's create wonders together with the power and simplicity of crewAI.
+A comprehensive markdown report is saved to `output/report.md` containing:
+
+1. **Executive Summary**
+2. **Company Status & Health**
+3. **Historical Performance**
+4. **Challenges & Opportunities**
+5. **Recent News & Events**
+6. **Market Outlook**
+
+## 📂 Project Structure
+
+```
+financial_researcher/
+├── output/
+│   └── report.md
+├── knowledge/
+└── src/financial_researcher/
+    ├── config/
+    │   ├── agents.yaml
+    │   └── tasks.yaml
+    ├── tools/
+    │   └── custom_tool.py
+    ├── crew.py
+    └── main.py
+```
+
+## 💡 Example Companies to Research
+
+- Apple
+- Tesla
+- NVIDIA
+- Microsoft
+- Amazon
+
+## 🎨 Key Features
+
+- **Web Search Integration**: Real-time data gathering via Serper
+- **Task Context Passing**: Research flows seamlessly to analysis
+- **Professional Reports**: Well-structured markdown output
+- **Market Disclaimer**: Notes that reports shouldn't be used for trading decisions
+
+## ⚠️ Disclaimer
+
+The reports generated are for informational purposes only and should not be used as the sole basis for investment decisions. Always consult with a qualified financial advisor.
