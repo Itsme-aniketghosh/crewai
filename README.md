@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/crewAIInc/crewAI/main/docs/crewai_logo.png" alt="CrewAI Logo" width="200"/>
-</p>
-
 <h1 align="center">🚀 CrewAI Multi-Agent Projects Collection</h1>
 
 <p align="center">
@@ -321,6 +317,22 @@ crewai/
 
 ---
 
+## 📁 Example Outputs
+
+Each project includes example outputs so you can see what the crews produce before running them yourself.
+
+| Project | Output Location | Files |
+|---------|-----------------|-------|
+| **coder** | `coder/output/` | `code_and_output.txt` |
+| **debate** | `debate/output/` | `propose.md`, `oppose.md`, `decide.md` |
+| **engineering_team** | `engineering_team/example_output_*/` | Design docs, Python modules, Gradio UI, Unit tests |
+| **financial_researcher** | `financial_researcher/output/` | `report.md` |
+| **stock_picker** | `stock_picker/output/` | `trending_companies.json`, `research_report.json`, `decision.md` |
+
+> 💡 **Tip:** The `engineering_team` project has multiple example outputs (`example_output_4o`, `example_output_mini`, `example_output_new`) showing results from different LLM configurations.
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -458,12 +470,6 @@ Contributions are welcome! Here's how you can help:
 - [Learn CrewAI](https://learn.crewai.com/)
 - [Serper API](https://serper.dev/)
 - [Pushover API](https://pushover.net/)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
