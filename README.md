@@ -482,9 +482,5 @@ Contributions are welcome! Here's how you can help:
 ---
 
 <p align="center">
-  <strong>⭐ Star this repository if you find it helpful! ⭐</strong>
-</p>
-
-<p align="center">
   Made with ❤️ and 🤖 AI Agents
 </p>
